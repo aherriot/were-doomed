@@ -1,0 +1,197 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+
+
+
+
+.Board {
+  display: grid;
+  grid-template-columns: 400px 1fr;
+}
+
+.Header {
+  grid-column: 1/span 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10px;
+  color: white;
+  background-color: goldenrod;
+  background: repeating-linear-gradient(
+    -45deg,
+    goldenrod,
+    goldenrod 20px,
+    #000 20px,
+    #000 40px
+  );
+}
+
+.Header .Title {
+  color: #fff;
+  background: #666;
+  border: 2px solid #333;
+  padding: 10px;
+}
+
+.CountdownTimer {
+  font-size: 24px;
+  font-weight: bold;
+  background: #666;
+  border: 2px solid #333;
+  padding: 10px;
+}
+
+.CountdownTimer.warning {
+  color: red;
+}
+
+.Phase {
+  padding: 10px;
+}
+
+.PhaseAction {
+
+}
+
+.PhaseAction .actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  margin: 4px 0px;
+  background: #ccc;
+  border-radius: 0;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+
+:root {
+  --produce-color: hsl(227, 15%, 65%);
+  --indoctrinate-color: hsl(293, 15%, 65%);
+  --propagandize-color: hsl(124, 15%, 65%);
+  --invade-color: hsl(49, 15%, 65%);
+  --nuke-color: hsl(0, 10%, 65%);
+}
+
+.action.produce {
+  background: linear-gradient(90deg,var(--produce-color), #ccc);
+}
+.action.produce:hover,.action.produce:focus {
+  background: var(--produce-color);
+}
+
+.action.indoctrinate {
+  background: linear-gradient(90deg,var(--indoctrinate-color), #ccc);
+}
+.action.indoctrinate:hover,.action.indoctrinate:focus {
+  background: var(--indoctrinate-color);
+}
+
+.action.propagandize {
+  background: linear-gradient(90deg,var(--propagandize-color), #ccc);
+}
+.action.propagandize:hover,.action.propagandize:focus {
+  background: var(--propagandize-color);
+}
+
+.action.invade {
+  background: linear-gradient(90deg,var(--invade-color), #ccc);
+}
+.action.invade:hover,.action.invade:focus {
+  background: var(--invade-color);
+}
+
+.action.nuke {
+  background: linear-gradient(90deg,var(--nuke-color), #ccc);
+}
+.action.nuke:hover,.action.nuke:focus {
+  background: var(--nuke-color);
+}
+
+
+.action .icon {
+  margin: 10px;
+}
+
+.action .description {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.action .title {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+
+.PlayerCards {
+  border-right: 2px solid black;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.PlayerCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  /* border-radius: 4px; */
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin: 10px;
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
