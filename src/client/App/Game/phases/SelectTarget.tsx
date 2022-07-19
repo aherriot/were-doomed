@@ -1,5 +1,5 @@
 import React from "react";
-import { getOtherAlivePlayers } from "../../utils";
+import { getOtherAlivePlayers } from "../../../../shared/utils";
 import { CommonProps } from "../types";
 
 type SelectTargetProps = Omit<CommonProps, "moves">;

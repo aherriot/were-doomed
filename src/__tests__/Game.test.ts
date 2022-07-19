@@ -1,4 +1,4 @@
-import { getNumberOfSeats } from "../WereDoomed";
+import { getNumberOfSeats } from "../shared/utils";
 
 describe("getNumberOfSeats", () => {
   it("should return 0 for 10", () => {

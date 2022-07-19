@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { BoardProps } from "boardgame.io/react";
-import { GameState } from "../types";
+import { FilteredMetadata } from "boardgame.io";
+import { GameState } from "../../../types";
 import PlayerCards from "./PlayerCards";
 
 import {
@@ -24,8 +25,24 @@ const phaseMap: Record<string, React.ComponentType<CommonProps>> = {
   endgame: PhaseEndGame,
 };
 
-const Board = ({ G, ctx, moves }: BoardProps<GameState>) => {
+const Board = ({
+  G,
+  ctx,
+  moves,
+  matchData,
+  playerID,
+}: BoardProps<GameState>) => {
   const [selectedTarget, setSelectedTarget] = useState<string | null>(null);
+
+  const playerInfoById = useMemo(() => {
+    const result: Record<string, FilteredMetadata[number]> = {};
+    matchData?.forEach((data: FilteredMetadata[number]) => {
+      if (data.name) {
+        result[data.id] = data;
+      }
+    });
+    return result;
+  }, [matchData]);
 
   const PhaseComponent = phaseMap[ctx.phase];
 
@@ -33,27 +50,23 @@ const Board = ({ G, ctx, moves }: BoardProps<GameState>) => {
     <div className="Board">
       <Header endTime={G.endTime} />
       {/* <div>Leader: {G.leaderId}</div> */}
+
       <PlayerCards
         G={G}
         ctx={ctx}
+        playerID={playerID}
+        playerInfoById={playerInfoById}
         selectedTarget={selectedTarget}
         setSelectedTarget={setSelectedTarget}
       />
-      {/* <div>
-        Active Players:&nbsp;
-        {ctx.activePlayers
-          ? Object.entries(ctx.activePlayers).map(([key, value]) => (
-              <div key={key}>
-                {key} phase: {value}
-              </div>
-            ))
-          : "None"}
-      </div> */}
+
       <div className="Phase">
         <PhaseComponent
           G={G}
           ctx={ctx}
+          playerID={playerID}
           moves={moves}
+          playerInfoById={playerInfoById}
           selectedTarget={selectedTarget}
           setSelectedTarget={setSelectedTarget}
         />

@@ -1,6 +1,9 @@
 import { Ctx } from "boardgame.io";
-import { GameState, Move, PlayerData } from "../types";
+import { GameState, Move, PlayerData } from "../../types";
 
+export const GAME_NAME = "WereDoomed";
+export const MIN_NUMBER_OF_PLAYERS = 4;
+export const MAX_NUMBER_OF_PLAYERS = 10;
 export const TOTAL_RESOURCES_TOKENS = 130;
 export const TOTAL_INFLUENCE_TOKENS = 100;
 

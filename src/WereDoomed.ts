@@ -5,25 +5,13 @@ import {
   computeEndDate,
   countVotes,
   forEachAlivePlayer,
+  GAME_NAME,
   getNumberOfAlivePlayers,
+  MAX_NUMBER_OF_PLAYERS,
+  MIN_NUMBER_OF_PLAYERS,
   TOTAL_INFLUENCE_TOKENS,
   TOTAL_RESOURCES_TOKENS,
-} from "./utils";
-
-/**
- * Game Sequence
- * 1. Action phase starting with first player
- * 2. Contribute phase concurrently
- * * if there is a tie, vote on the winner
- * * winner receives 1 influence, frst player next round, and draws event card
- * 3. Event phase
- * * draw event card
- * * may be a clandestine or public event
- * 4. End Game
- * * players get on ship ordered by influence
- * * if there is a tie, vote on the winner
- *
- */
+} from "./shared/utils";
 
 function checkContributionAllDone(G: GameState, ctx: Ctx): boolean {
   let allDone = true;
@@ -42,6 +30,9 @@ function checkContributionAllDone(G: GameState, ctx: Ctx): boolean {
 }
 
 const WereDoomed: Game<GameState> = {
+  name: GAME_NAME,
+  minPlayers: MIN_NUMBER_OF_PLAYERS,
+  maxPlayers: MAX_NUMBER_OF_PLAYERS,
   setup: (ctx) => {
     const playerData: Record<string, PlayerData> = {};
     for (let i = 0; i < ctx.numPlayers; i++) {
@@ -99,7 +90,12 @@ const WereDoomed: Game<GameState> = {
         }
       },
       turn: {
-        order: TurnOrder.ONCE,
+        order: {
+          first: (G, ctx) =>
+            G.leaderId != null ? parseInt(G.leaderId, 10) : 0,
+          next: (G, ctx) => (ctx.playOrderPos + 1) % ctx.numPlayers,
+          // playOrder,
+        },
       },
       moves: {
         produce: (G, ctx) => {

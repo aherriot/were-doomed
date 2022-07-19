@@ -6,7 +6,7 @@ const PhasePreGame = ({ G, ctx, moves }: CommonProps): ReactElement => {
     <div>
       <h1>PreGame</h1>
 
-      <button onClick={moves.startGame}>Start Game</button>
+      <button onClick={() => moves.startGame()}>Start Game</button>
     </div>
   );
 };

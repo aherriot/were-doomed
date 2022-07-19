@@ -11,6 +11,8 @@ const PhaseAction = ({
   G,
   ctx,
   moves,
+  playerID,
+  playerInfoById,
   selectedTarget,
   setSelectedTarget,
 }: CommonProps): ReactElement => {
@@ -32,11 +34,13 @@ const PhaseAction = ({
       <SelectTarget
         G={G}
         ctx={ctx}
+        playerID={playerID}
+        playerInfoById={playerInfoById}
         selectedTarget={selectedTarget}
         setSelectedTarget={setSelectedTarget}
       />
       <div className="actions">
-        <button className="action produce" onClick={() => moves.contribute()}>
+        <button className="action produce" onClick={() => moves.produce()}>
           <WrenchIcon />
           <div className="description">
             <div className="title">Produce</div>
@@ -61,7 +65,7 @@ const PhaseAction = ({
           <div className="description">
             <div className="title">Propagandize</div>
             <div className="details">
-              Spend 1 resource to steal 1 influence from another player
+              Steal 1 influence from another player by spending 1 resource
             </div>
           </div>
         </button>
@@ -70,7 +74,7 @@ const PhaseAction = ({
           <div className="description ">
             <div className="title">Invade</div>
             <div className="details">
-              Spend 2 influence to steal 1 resource from another player.
+              Steal 2 resources from another player by spending 1 influence
             </div>
           </div>
         </button>
