@@ -1,10 +1,10 @@
 import { Server } from "boardgame.io/server";
 import path from "path";
 import serve from "koa-static";
-import WereDoomed from "../shared/WereDoomed";
+import game from "../shared/game";
 
 const server = Server({
-  games: [WereDoomed],
+  games: [game],
   origins: ["*"],
 });
 const PORT = Number(process.env.PORT || 8000);

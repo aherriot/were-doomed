@@ -1,14 +1,14 @@
 import { Client } from "boardgame.io/react";
 import { SocketIO } from "boardgame.io/multiplayer";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import Board from "./Board";
-import WereDoomed from "../../../shared/WereDoomed";
+import game from "../../../shared/game";
 
 import "./index.css";
 
 const GameClient = Client({
-  game: WereDoomed,
+  game,
   board: Board,
   debug: true,
   multiplayer: SocketIO({
