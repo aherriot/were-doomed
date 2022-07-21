@@ -1,7 +1,7 @@
-import { Origins, Server } from "boardgame.io/server";
+import { Server } from "boardgame.io/server";
 import path from "path";
 import serve from "koa-static";
-import WereDoomed from "../WereDoomed";
+import WereDoomed from "../shared/WereDoomed";
 
 const server = Server({
   games: [WereDoomed],
@@ -21,3 +21,21 @@ server.run(PORT, () => {
     );
   });
 });
+
+// Define clean-up method.
+const HOUR = 60 * 60 * 1000;
+const cleanStaleMatches = async () => {
+  // Retrieve matchIDs for matches unchanged for > 2 hour.
+  const staleMatchIDs = await server.db.listMatches({
+    where: {
+      updatedBefore: Date.now() - 2 * HOUR,
+    },
+  });
+
+  for (const id of staleMatchIDs) {
+    server.db.wipe(id);
+  }
+};
+
+// Schedule clean-up.
+setInterval(cleanStaleMatches, HOUR);

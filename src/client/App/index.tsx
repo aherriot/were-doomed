@@ -9,7 +9,7 @@ const App = () => {
       <Routes>
         <Route index element={<Home />} />
         <Route path="lobby" element={<GameLobby />} />
-        <Route path="/games/:matchId/:playerId" element={<Game />} />
+        <Route path="/play/:matchId/:playerId" element={<Game />} />
       </Routes>
     </BrowserRouter>
   );

@@ -50,7 +50,7 @@ const MatchList = ({
         setMatchId(matchId);
         setClientCredentials(playerCredentials);
         setPlayerId(playerID);
-        navigate(`/games/${matchId}/${playerID}`);
+        navigate(`/play/${matchId}/${playerID}`);
       },
     }
   );
@@ -75,8 +75,8 @@ const MatchList = ({
   //   );
 
   //   if (player) {
-  //     // navigate(`/games/${matchId}/${playerId}`);
-  //     console.log(`navigating to /games/${matchId}/${playerId}`);
+  //     // navigate(`/play/${matchId}/${playerId}`);
+  //     console.log(`navigating to /play/${matchId}/${playerId}`);
   //   } else {
   //     localStorage.removeItem("matchId");
   //     localStorage.removeItem("playerId");
@@ -98,8 +98,8 @@ const MatchList = ({
   //     localStorage.setItem("matchId", matchId);
   //     localStorage.setItem("clientCredentials", resp.playerCredentials);
   //     localStorage.setItem("playerId", resp.playerID);
-  //     // navigate(`/games/${matchId}/${resp.playerID}`);
-  //     console.log(`Navigate: /games/${matchId}/${resp.playerID}`);
+  //     // navigate(`/play/${matchId}/${resp.playerID}`);
+  //     console.log(`Navigate: /play/${matchId}/${resp.playerID}`);
   //   }
 
   if (isLoading) {
@@ -124,7 +124,7 @@ const MatchList = ({
         return (
           <div key={game.matchID}>
             <div>
-              <Link to={`/games/${game.matchID}/0`}>
+              <Link to={`/play/${game.matchID}/0`}>
                 Game {i} {game.matchID}
               </Link>
             </div>

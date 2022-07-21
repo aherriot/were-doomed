@@ -2,7 +2,7 @@
   "name": "were-doomed",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000",
+  "proxy": "http://127.0.0.1:8000",
   "dependencies": {
     "@tanstack/react-query": "^4.0.5",
     "@testing-library/jest-dom": "^5.16.4",
@@ -22,13 +22,18 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@types/koa-static": "^4.0.2"
+    "@types/koa-static": "^4.0.2",
+    "concurrently": "^7.3.0",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1"
   },
   "scripts": {
-    "client:start": "react-scripts start",
+    "client:dev": "react-scripts start",
     "client:build": "react-scripts build",
     "client:test": "react-scripts test",
+    "server:dev": "ts-node --project src/server/tsconfig.json src/server/index.ts",
     "server:build": "tsc --project src/server",
+    "dev": "concurrently --names \"client,server\" --prefix-colors \"cyan,blue\" \"npm run server:dev\" \"npm run client:dev\"",
     "build": "npm run client:build && npm run server:build",
     "start": "node dist/server/index.js"
   },

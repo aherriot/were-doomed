@@ -3,7 +3,7 @@ import { SocketIO } from "boardgame.io/multiplayer";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 import Board from "./Board";
-import WereDoomed from "../../../WereDoomed";
+import WereDoomed from "../../../shared/WereDoomed";
 
 import "./index.css";
 

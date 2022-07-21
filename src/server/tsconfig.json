@@ -3,13 +3,11 @@
   "compilerOptions": {
     "target": "es5",
     "outDir": "../../dist",
-    // "lib": ["esnext"],
     "noEmit": false,
     "sourceMap": true,
     "module": "CommonJS",
     "strict": true,
     "moduleResolution": "node"
   },
-  "exclude": ["../../build", "../client"],
   "include": [".", "../shared"]
 }

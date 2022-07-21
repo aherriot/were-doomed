@@ -1,6 +1,6 @@
 import { Ctx, Game } from "boardgame.io";
 import { INVALID_MOVE, TurnOrder } from "boardgame.io/core";
-import { GameState, PlayerData } from "./types";
+import { GameState, PlayerData } from "../types";
 import {
   computeEndDate,
   countVotes,
@@ -11,7 +11,7 @@ import {
   MIN_NUMBER_OF_PLAYERS,
   TOTAL_INFLUENCE_TOKENS,
   TOTAL_RESOURCES_TOKENS,
-} from "./shared/utils";
+} from "./utils";
 
 function checkContributionAllDone(G: GameState, ctx: Ctx): boolean {
   let allDone = true;
@@ -91,10 +91,14 @@ const WereDoomed: Game<GameState> = {
       },
       turn: {
         order: {
-          first: (G, ctx) =>
-            G.leaderId != null ? parseInt(G.leaderId, 10) : 0,
-          next: (G, ctx) => (ctx.playOrderPos + 1) % ctx.numPlayers,
-          // playOrder,
+          first: (G, ctx) => {
+            console.log("first", G.leaderId);
+            return G.leaderId != null ? parseInt(G.leaderId, 10) : 0;
+          },
+          next: (G, ctx) => {
+            console.log("next", ctx.playOrderPos);
+            return (ctx.playOrderPos + 1) % ctx.numPlayers;
+          },
         },
       },
       moves: {

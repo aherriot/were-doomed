@@ -19,14 +19,18 @@ const JoinExistingGame = ({
   clearAllExceptPlayerName,
 }: JoinExistingGameProps) => {
   const navigate = useNavigate();
-  const { data, isError, isLoading } = useQuery(
+  const { isError, isLoading } = useQuery(
     [matchId, playerId, clientCredentials],
     () => {
-      return lobbyClient.updatePlayer(GAME_NAME, matchId, {
-        playerID: playerId,
-        credentials: clientCredentials,
-        data: null,
-      });
+      return lobbyClient
+        .updatePlayer(GAME_NAME, matchId, {
+          playerID: playerId,
+          credentials: clientCredentials,
+          data: null,
+        })
+        .then(() => {
+          return true;
+        });
     },
     {
       enabled: !!clientCredentials,
@@ -56,7 +60,7 @@ const JoinExistingGame = ({
     <div>
       <h2>Join Existing Game</h2>
       <p>You are already part of a game.</p>
-      <Link to={`/games/${matchId}/${playerId}`}>Go to game</Link>
+      <Link to={`/play/${matchId}/${playerId}`}>Go to game</Link>
       <button onClick={clearAllExceptPlayerName}>Leave Game</button>
     </div>
   );
