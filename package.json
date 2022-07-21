@@ -29,6 +29,7 @@
     "client:build": "react-scripts build",
     "client:test": "react-scripts test",
     "server:build": "tsc --project src/server",
+    "build": "npm run client:build && npm run server:build",
     "start": "node dist/server/index.js"
   },
   "eslintConfig": {
