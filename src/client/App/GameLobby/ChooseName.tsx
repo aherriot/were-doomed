@@ -18,7 +18,6 @@ const ChooseName = ({ name, setName, setIsEditingName }: ChooseNameProps) => {
       nameValue.length >= MIN_NAME_LENGTH &&
       nameValue.length <= MAX_NAME_LENGTH
     ) {
-      localStorage.setItem("playerName", nameValue);
       setName(nameValue);
       setIsEditingName(false);
     } else {

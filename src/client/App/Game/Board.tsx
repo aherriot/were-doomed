@@ -30,7 +30,9 @@ const Board = ({
   ctx,
   moves,
   matchData,
+  matchID,
   playerID,
+  credentials,
 }: BoardProps<GameState>) => {
   const [selectedTarget, setSelectedTarget] = useState<string | null>(null);
 
@@ -48,7 +50,12 @@ const Board = ({
 
   return (
     <div className="Board">
-      <Header endTime={G.endTime} />
+      <Header
+        endTime={G.endTime}
+        matchID={matchID}
+        playerID={playerID}
+        credentials={credentials}
+      />
       {/* <div>Leader: {G.leaderId}</div> */}
 
       <PlayerCards

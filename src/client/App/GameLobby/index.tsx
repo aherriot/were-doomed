@@ -1,64 +1,82 @@
 import { useRef, useState } from "react";
 import { LobbyClient } from "boardgame.io/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import ChooseName from "./ChooseName";
 import JoinExistingGame from "./JoinExistingGame";
 import MatchList from "./MatchList";
+import useLocalStorage from "./useLocalStorage";
 
 const { protocol, hostname, port } = window.location;
-const server = `${protocol}//${hostname}:${port}`;
+const SERVER = `${protocol}//${hostname}:${port}`;
+
+const queryClient = new QueryClient();
 
 const GameLobby = () => {
   const lobbyClient = useRef<LobbyClient>();
   if (!lobbyClient.current) {
-    lobbyClient.current = new LobbyClient({ server });
+    lobbyClient.current = new LobbyClient({ server: SERVER });
   }
 
-  const playerId = localStorage.getItem("playerId");
-  const matchId: null | string = localStorage.getItem("matchId");
-  const clientCredentials: null | string =
-    localStorage.getItem("clientCredentials");
+  const [playerName, setPlayerName] = useLocalStorage("playerName");
+  const [playerId, setPlayerId, clearPlayerId] = useLocalStorage("playerId");
+  const [matchId, setMatchId, clearMatchId] = useLocalStorage("matchId");
+  const [clientCredentials, setClientCredentials, clearClientCredentials] =
+    useLocalStorage("clientCredentials");
 
-  const [playerName, setPlayerName] = useState<string | null>(
-    localStorage.getItem("playerName")
-  );
+  const clearAllExceptPlayerName = () => {
+    clearPlayerId();
+    clearMatchId();
+    clearClientCredentials();
+  };
+
   const [isEditingName, setIsEditingName] = useState(!playerName);
 
+  let content: JSX.Element;
+
   if (!playerName || isEditingName) {
-    return (
-      <div>
-        <h1>We're Doomed!</h1>
-        <ChooseName
-          name={playerName}
-          setName={setPlayerName}
-          setIsEditingName={setIsEditingName}
-        />
-      </div>
+    content = (
+      <ChooseName
+        name={playerName}
+        setName={setPlayerName}
+        setIsEditingName={setIsEditingName}
+      />
     );
-  } else if (playerName && playerId && clientCredentials && matchId) {
-    return (
+  } else if (playerName && playerId != null && clientCredentials && matchId) {
+    content = (
       <JoinExistingGame
         matchId={matchId}
         playerId={playerId}
+        clientCredentials={clientCredentials}
         lobbyClient={lobbyClient.current}
+        clearAllExceptPlayerName={clearAllExceptPlayerName}
       />
     );
   } else if (!matchId || !clientCredentials || !playerId) {
-    localStorage.removeItem("matchId");
-    localStorage.removeItem("clientCredentials");
-    localStorage.removeItem("playerId");
-    return (
+    content = (
       <div>
-        <h1>We're Doomed!</h1>
         <div>
           Your player name is: <strong>{playerName}</strong>{" "}
           <button onClick={() => setIsEditingName(true)}>Edit Name</button>
         </div>
-        <MatchList playerName={playerName} lobbyClient={lobbyClient.current} />
+        <MatchList
+          playerName={playerName}
+          lobbyClient={lobbyClient.current}
+          setPlayerId={setPlayerId}
+          setMatchId={setMatchId}
+          setClientCredentials={setClientCredentials}
+        />
       </div>
     );
+  } else {
+    content = <div>Not sure how we got here.</div>;
   }
 
-  return <div>Not sure how we got here.</div>;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <h1>We're Doomed!!</h1>
+      {content}
+    </QueryClientProvider>
+  );
 };
 
 export default GameLobby;
