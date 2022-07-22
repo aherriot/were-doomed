@@ -5,8 +5,6 @@ import { Link, useParams } from "react-router-dom";
 import Board from "./Board";
 import game from "../../../shared/game";
 
-import "./index.css";
-
 const GameClient = Client({
   game,
   board: Board,

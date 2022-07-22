@@ -58,25 +58,27 @@ const Board = ({
       />
       {/* <div>Leader: {G.leaderId}</div> */}
 
-      <PlayerCards
-        G={G}
-        ctx={ctx}
-        playerID={playerID}
-        playerInfoById={playerInfoById}
-        selectedTarget={selectedTarget}
-        setSelectedTarget={setSelectedTarget}
-      />
-
-      <div className="Phase">
-        <PhaseComponent
+      <div className="flex">
+        <PlayerCards
           G={G}
           ctx={ctx}
           playerID={playerID}
-          moves={moves}
           playerInfoById={playerInfoById}
           selectedTarget={selectedTarget}
           setSelectedTarget={setSelectedTarget}
         />
+
+        <div className="p-4">
+          <PhaseComponent
+            G={G}
+            ctx={ctx}
+            playerID={playerID}
+            moves={moves}
+            playerInfoById={playerInfoById}
+            selectedTarget={selectedTarget}
+            setSelectedTarget={setSelectedTarget}
+          />
+        </div>
       </div>
     </div>
   );

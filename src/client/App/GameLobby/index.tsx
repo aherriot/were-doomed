@@ -53,10 +53,15 @@ const GameLobby = () => {
     );
   } else if (!matchId || !clientCredentials || !playerId) {
     content = (
-      <div>
+      <div className="text-center mx-auto">
         <div>
-          Your player name is: <strong>{playerName}</strong>{" "}
-          <button onClick={() => setIsEditingName(true)}>Edit Name</button>
+          Welcome: <strong>{playerName}</strong>{" "}
+          <button
+            className="text-sm inline text-yellow-500 focus:underline hover:underline hover:text-yellow-600 focus:text-yellow-600 focus:shadow-outline focus:outline-none font-semibold"
+            onClick={() => setIsEditingName(true)}
+          >
+            Edit Name
+          </button>
         </div>
         <MatchList
           playerName={playerName}
@@ -73,8 +78,16 @@ const GameLobby = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <h1>We're Doomed!!</h1>
-      {content}
+      <div className="max-w-3xl mx-auto">
+        <div className="mt-5 mb-5 mx-auto max-w-md">
+          <div className="bg-caution mx-auto h-5"></div>
+          <h1 className="text-center text-4xl font-bold my-5 uppercase tracking-widest">
+            We're&nbsp;&nbsp;&nbsp;Doomed!
+          </h1>
+          <div className="bg-caution mx-auto h-5"></div>
+        </div>
+        {content}
+      </div>
     </QueryClientProvider>
   );
 };

@@ -8,7 +8,7 @@ type PlayerCardProps = {
 };
 const PlayerCard = ({ playerData, playerId, playerInfo }: PlayerCardProps) => {
   return (
-    <div className="PlayerCard">
+    <div className="border-2 border-black">
       <div title={playerId}>Name: {playerInfo?.name}</div>
       <div>Resources: {playerData.resources}</div>
       <div>Influence: {playerData.influence}</div>

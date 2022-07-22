@@ -35,28 +35,43 @@ const ChooseName = ({ name, setName, setIsEditingName }: ChooseNameProps) => {
   };
 
   return (
-    <div>
-      <p>Please enter your name:</p>
-      <form onSubmit={onSubmit}>
+    <div className="text-center mt-10">
+      <p>Please enter your player name:</p>
+      <form className="mt-5" onSubmit={onSubmit}>
         <input
+          className="bg-gray-200 appearance-none border-2 border-gray-200 rounded py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-yellow-500"
           type="text"
-          placeholder="Name"
+          placeholder="Player Name"
           value={nameValue}
           onChange={(e) => setNameValue(e.target.value)}
           maxLength={10}
         />
-        <input type="submit" value="Submit" onClick={onEnter} />
+        <input
+          className="ml-1 shadow bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          type="submit"
+          value={name ? "Rename" : "Play"}
+          onClick={onEnter}
+        />
         {nameValue.length === MAX_NAME_LENGTH && (
-          <p>{MAX_NAME_LENGTH} is the max name length!</p>
+          <p className="text-red-700 font-semibold">
+            {MAX_NAME_LENGTH} is the max name length!
+          </p>
         )}
         {showRestrictions && (
-          <p>
+          <p className="text-red-700 font-semibold">
             Names must be between {MIN_NAME_LENGTH} and {MAX_NAME_LENGTH}{" "}
             characters.
           </p>
         )}
       </form>
-      <button onClick={onCancel}>Cancel</button>
+      {name && (
+        <button
+          className="mt-7 focus:shadow-outline focus:outline-none text-slate-500 hover:underline focus:underline hover:text-yellow-500 focus:text-yellow-500 font-semibold"
+          onClick={onCancel}
+        >
+          Go back to lobby
+        </button>
+      )}
     </div>
   );
 };

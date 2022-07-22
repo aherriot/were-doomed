@@ -3,6 +3,8 @@ import Home from "./Home";
 import Game from "./Game";
 import GameLobby from "./GameLobby";
 
+import "./index.css";
+
 const App = () => {
   return (
     <BrowserRouter>

@@ -23,8 +23,11 @@
   },
   "devDependencies": {
     "@types/koa-static": "^4.0.2",
+    "autoprefixer": "^10.4.7",
     "concurrently": "^7.3.0",
     "nodemon": "^2.0.19",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^3.1.6",
     "ts-node": "^10.9.1"
   },
   "scripts": {
@@ -33,7 +36,7 @@
     "client:test": "react-scripts test",
     "server:dev": "ts-node --project src/server/tsconfig.json src/server/index.ts",
     "server:build": "tsc --project src/server",
-    "dev": "concurrently --names \"client,server\" --prefix-colors \"cyan,blue\" \"npm run server:dev\" \"npm run client:dev\"",
+    "dev": "concurrently --names \"server,client\" --prefix-colors \"cyan,blue\" \"npm run server:dev\" \"npm run client:dev\"",
     "build": "npm run client:build && npm run server:build",
     "start": "node dist/server/index.js"
   },

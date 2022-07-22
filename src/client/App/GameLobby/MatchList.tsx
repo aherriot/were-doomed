@@ -111,8 +111,7 @@ const MatchList = ({
   }
 
   return (
-    <div>
-      <h1>Match List</h1>
+    <div className="border-slate-500 border border-3 p-5">
       {data?.matches.map((game, i) => {
         const joinedPlayers =
           game.players?.filter((player) => player.name) ?? [];
@@ -122,29 +121,40 @@ const MatchList = ({
         );
 
         return (
-          <div key={game.matchID}>
-            <div>
-              <Link to={`/play/${game.matchID}/0`}>
-                Game {i} {game.matchID}
-              </Link>
+          <div key={game.matchID} className="mb-5">
+            <div className="">
+              <span className="font-semibold">Game #{i + 1}</span>
+              {!isFull && !joinedPlayerIsCurrentPlayer && (
+                <>
+                  <span className="mx-2">&rarr;</span>
+                  <button
+                    className="inline text-yellow-500 focus:underline hover:underline hover:text-yellow-600 focus:text-yellow-600 focus:shadow-outline focus:outline-none font-semibold"
+                    onClick={() => joinMatch({ matchId: game.matchID })}
+                  >
+                    join
+                  </button>
+                </>
+              )}
             </div>
-            <div>
+            <div className="text-md">
               Players:{" "}
               {joinedPlayers.map((player) => player.name).join(", ") ||
                 "No players yet"}
             </div>
-            {!isFull && !joinedPlayerIsCurrentPlayer && (
-              <button onClick={() => joinMatch({ matchId: game.matchID })}>
-                Join
-              </button>
-            )}
           </div>
         );
       })}
-      {data?.matches.length === 0 && <div>No games exist</div>}
+      {data?.matches.length === 0 && (
+        <div className="font-semibold text-slate-500">No games exist</div>
+      )}
 
-      <div>
-        <button onClick={() => createMatch()}>Create Game</button>
+      <div className="mt-4">
+        <button
+          className="ml-1 shadow bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          onClick={() => createMatch()}
+        >
+          Create Game
+        </button>
       </div>
     </div>
   );

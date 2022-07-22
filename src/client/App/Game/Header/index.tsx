@@ -33,7 +33,7 @@ const Header = ({ endTime, matchID, playerID, credentials }: HeaderProps) => {
   };
 
   return (
-    <div className="Header">
+    <div className="bg-caution">
       <h1 className="Title">We're Doomed</h1>
       {playerID != null && credentials && (
         <button onClick={onLeave}>Leave Game</button>

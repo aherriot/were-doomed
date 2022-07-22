@@ -25,6 +25,6 @@ const PlayerCards = ({
       );
     }
   }
-  return <div className="PlayerCards">{playerCards}</div>;
+  return <div className="grid grid-cols-2 gap-1">{playerCards}</div>;
 };
 export default PlayerCards;

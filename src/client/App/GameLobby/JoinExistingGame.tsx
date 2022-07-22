@@ -19,6 +19,7 @@ const JoinExistingGame = ({
   clearAllExceptPlayerName,
 }: JoinExistingGameProps) => {
   const navigate = useNavigate();
+
   const { isError, isLoading } = useQuery(
     [matchId, playerId, clientCredentials],
     () => {
@@ -34,6 +35,7 @@ const JoinExistingGame = ({
     },
     {
       enabled: !!clientCredentials,
+      retry: false,
       onError: (e: { message: string }) => {
         if (e.message === "HTTP status 404") {
           navigate("/lobby");
@@ -43,6 +45,17 @@ const JoinExistingGame = ({
     }
   );
 
+  const onLeave = () => {
+    if (playerId != null && clientCredentials) {
+      lobbyClient.leaveMatch(GAME_NAME, matchId, {
+        playerID: playerId,
+        credentials: clientCredentials,
+      });
+    }
+    clearAllExceptPlayerName();
+    navigate("/lobby");
+  };
+
   if (isLoading) {
     return <div>Attempting to join existing game...</div>;
   }
@@ -51,7 +64,13 @@ const JoinExistingGame = ({
     return (
       <div>
         There was an error joining the existing game you were a part of. Please
-        return to lobby <Link to="/lobby">here</Link>.
+        <Link
+          className="text-slate-500 hover:underline focus:underline hover:text-yellow-500 focus:text-yellow-500 font-semibold"
+          to="/lobby"
+        >
+          return to the lobby{" "}
+        </Link>
+        .
       </div>
     );
   }
@@ -60,8 +79,18 @@ const JoinExistingGame = ({
     <div>
       <h2>Join Existing Game</h2>
       <p>You are already part of a game.</p>
-      <Link to={`/play/${matchId}/${playerId}`}>Go to game</Link>
-      <button onClick={clearAllExceptPlayerName}>Leave Game</button>
+      <button
+        className="mt-7 focus:shadow-outline focus:outline-none text-slate-500 hover:underline focus:underline hover:text-yellow-500 focus:text-yellow-500 font-semibold"
+        onClick={onLeave}
+      >
+        Leave Game
+      </button>
+      <Link
+        className="ml-2 shadow bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+        to={`/play/${matchId}/${playerId}`}
+      >
+        Go to game
+      </Link>
     </div>
   );
 };
