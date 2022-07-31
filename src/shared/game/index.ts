@@ -1,5 +1,5 @@
 import { Game } from "boardgame.io";
-import { GameState, PlayerData } from "../../types";
+import { GameState, PlayerData } from "../types";
 
 import contribute from "./phases/contribute";
 import endGame from "./phases/endGame";
@@ -15,6 +15,7 @@ import {
   TOTAL_INFLUENCE_TOKENS,
   TOTAL_RESOURCES_TOKENS,
 } from "../utils";
+import results from "./phases/results";
 
 const WereDoomed: Game<GameState> = {
   name: GAME_NAME,
@@ -27,7 +28,7 @@ const WereDoomed: Game<GameState> = {
         resources: 0,
         influence: 0,
         contributions: 0,
-        isAlive: true,
+        isAlive: false,
         hasSkipped: false,
       };
     }
@@ -37,6 +38,7 @@ const WereDoomed: Game<GameState> = {
       projectResources: 0,
       leaderId: null,
       leaderVotes: {},
+      actionHistory: [],
       bank: {
         resources: TOTAL_RESOURCES_TOKENS,
         influence: TOTAL_INFLUENCE_TOKENS,
@@ -54,6 +56,7 @@ const WereDoomed: Game<GameState> = {
     voteLeader,
     event,
     endGame,
+    results,
   },
 };
 export default WereDoomed;

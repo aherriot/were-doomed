@@ -11,7 +11,8 @@ const App = () => {
       <Routes>
         <Route index element={<Home />} />
         <Route path="lobby" element={<GameLobby />} />
-        <Route path="/play/:matchId/:playerId" element={<Game />} />
+        <Route path="/play/:matchId" element={<Game />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </BrowserRouter>
   );

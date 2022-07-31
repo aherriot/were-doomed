@@ -1,11 +1,11 @@
 import { Ctx } from "boardgame.io";
-import { GameState, Move, PlayerData } from "../../types";
+import { GameState, Move, PlayerData } from "../types";
 
 export const GAME_NAME = "WereDoomed";
 export const MIN_NUMBER_OF_PLAYERS = 4;
 export const MAX_NUMBER_OF_PLAYERS = 10;
-export const TOTAL_RESOURCES_TOKENS = 130;
-export const TOTAL_INFLUENCE_TOKENS = 100;
+export const TOTAL_RESOURCES_TOKENS = 140;
+export const TOTAL_INFLUENCE_TOKENS = 70;
 
 type Action = "produce" | "indoctrinate" | "propagandize" | "invade" | "nuke";
 
@@ -58,6 +58,27 @@ export const RESOURCES_TO_SEAT = [
   { resources: 120, seats: 9 },
   { resources: 130, seats: 10 },
 ];
+
+export function getTopContributors(G: GameState): string[] {
+  let topContributions = 0;
+  let topContributorList: string[] = [];
+
+  for (let id in G.playerData) {
+    const playerData = G.playerData[id];
+    if (playerData.isAlive) {
+      if (playerData.contributions > topContributions) {
+        topContributions = playerData.contributions;
+        topContributorList = [id];
+      } else if (
+        playerData.contributions === topContributions &&
+        playerData.contributions !== 0
+      ) {
+        topContributorList.push(id);
+      }
+    }
+  }
+  return topContributorList;
+}
 
 export function computeEndDate(): number {
   const second = 1000;
@@ -116,6 +137,18 @@ export function getNumberOfSeats(resourceCount: number): number {
   return 0;
 }
 
+export function getNextSeat(resourceCount: number): number {
+  for (let i = RESOURCES_TO_SEAT.length - 1; i >= 0; i--) {
+    if (resourceCount >= RESOURCES_TO_SEAT[i].resources) {
+      if (i === RESOURCES_TO_SEAT.length - 1) {
+        return -1;
+      }
+      return RESOURCES_TO_SEAT[i + 1].resources;
+    }
+  }
+  return RESOURCES_TO_SEAT[0].resources;
+}
+
 export function getOtherAlivePlayers(G: GameState, ctx: Ctx): string[] {
   const alivePlayers: string[] = [];
   forEachAlivePlayer(G, (playerData, playerId) => {
@@ -144,4 +177,28 @@ export function forEachAlivePlayer(
       callback(playerData, playerId);
     }
   }
+}
+
+export function getPlayersToVoteOn(G: GameState): string[] {
+  const numOfSeats = getNumberOfSeats(G.projectResources);
+  const players: { id: string; influence: number }[] = [];
+
+  for (let id in G.playerData) {
+    if (G.playerData[id].isAlive) {
+      players.push({ id: id, influence: G.playerData[id].influence });
+    }
+  }
+
+  players.sort((a, b) => b.influence - a.influence);
+
+  const tiedPlayers: string[] = [];
+
+  // for (let i = 1; i < players.length; i++) {
+  // if (players[i].influence === players[i - 1].influence) {
+  // i--;
+  // }
+  // }
+
+  console.log("players", players);
+  return tiedPlayers;
 }

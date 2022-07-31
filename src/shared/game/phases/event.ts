@@ -1,5 +1,5 @@
 import { Ctx, PhaseConfig } from "boardgame.io";
-import { GameState } from "../../../types";
+import { GameState } from "../../types";
 
 const event: PhaseConfig<GameState, Ctx> = {
   moves: {

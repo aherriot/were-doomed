@@ -1,6 +1,6 @@
 import { Ctx, PhaseConfig } from "boardgame.io";
 import { INVALID_MOVE } from "boardgame.io/core";
-import { GameState } from "../../../types";
+import { GameState } from "../../types";
 import { countVotes, getNumberOfAlivePlayers } from "../../utils";
 
 const voteLeader: PhaseConfig<GameState, Ctx> = {
@@ -8,12 +8,12 @@ const voteLeader: PhaseConfig<GameState, Ctx> = {
   onEnd(G, ctx) {
     const { leader } = countVotes(G);
 
-    if (!leader) {
-      throw new Error("election ended with no leader", G.leaderVotes);
+    if (leader) {
+      G.leaderId = leader;
+      G.playerData[leader].influence++;
     }
 
-    G.leaderId = leader;
-    G.playerData[leader].influence++;
+    G.leaderVotes = {};
   },
   endIf: (G, ctx) => {
     const { leader, voteCount } = countVotes(G);
@@ -31,13 +31,24 @@ const voteLeader: PhaseConfig<GameState, Ctx> = {
             if (!ctx.playerID) {
               return INVALID_MOVE;
             }
+
+            if (!G.playerData[ctx.playerID].isAlive) {
+              return INVALID_MOVE;
+            }
+
             G.leaderVotes[ctx.playerID] = leaderId;
           },
         },
       },
     },
   },
-  next: "event",
+  next: (G, ctx) => {
+    const currentTime = new Date().getTime();
+    if (G.endTime && G.endTime < currentTime) {
+      return "endGame";
+    }
+    return "takeAction";
+  },
 };
 
 export default voteLeader;

@@ -1,8 +1,9 @@
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GAME_NAME, MAX_NUMBER_OF_PLAYERS } from "../../../shared/utils";
+import Button from "../components/Button";
 
 type MatchListProps = {
   lobbyClient: LobbyClient;
@@ -50,7 +51,7 @@ const MatchList = ({
         setMatchId(matchId);
         setClientCredentials(playerCredentials);
         setPlayerId(playerID);
-        navigate(`/play/${matchId}/${playerID}`);
+        navigate(`/play/${matchId}`);
       },
     }
   );
@@ -68,40 +69,6 @@ const MatchList = ({
     }
   );
 
-  // const match = games?.matches.find((match) => match.matchID === matchId);
-  // if (match && playerId != null) {
-  //   const player = match.players.find(
-  //     (player) => player.id === parseInt(playerId, 10)
-  //   );
-
-  //   if (player) {
-  //     // navigate(`/play/${matchId}/${playerId}`);
-  //     console.log(`navigating to /play/${matchId}/${playerId}`);
-  //   } else {
-  //     localStorage.removeItem("matchId");
-  //     localStorage.removeItem("playerId");
-  //     localStorage.removeItem("clientCredentials");
-  //   }
-  // } else {
-  //   localStorage.removeItem("matchId");
-  //   localStorage.removeItem("playerId");
-  //   localStorage.removeItem("clientCredentials");
-  // }
-
-  //   if (!playerName) {
-  //     return;
-  //   }
-  //   const resp = await lobbyClient.joinMatch(GAME_NAME, matchId, {
-  //     playerName,
-  //   });
-  //   if (resp) {
-  //     localStorage.setItem("matchId", matchId);
-  //     localStorage.setItem("clientCredentials", resp.playerCredentials);
-  //     localStorage.setItem("playerId", resp.playerID);
-  //     // navigate(`/play/${matchId}/${resp.playerID}`);
-  //     console.log(`Navigate: /play/${matchId}/${resp.playerID}`);
-  //   }
-
   if (isLoading) {
     return <div>Loading games...</div>;
   }
@@ -111,7 +78,7 @@ const MatchList = ({
   }
 
   return (
-    <div className="border-slate-500 border border-3 p-5">
+    <div className=" bg-slate-200 rounded p-5">
       {data?.matches.map((game, i) => {
         const joinedPlayers =
           game.players?.filter((player) => player.name) ?? [];
@@ -145,16 +112,13 @@ const MatchList = ({
         );
       })}
       {data?.matches.length === 0 && (
-        <div className="font-semibold text-slate-500">No games exist</div>
+        <div className="text-slate-800">No games exist</div>
       )}
 
       <div className="mt-4">
-        <button
-          className="ml-1 shadow bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-          onClick={() => createMatch()}
-        >
+        <Button className="" onClick={() => createMatch()}>
           Create Game
-        </button>
+        </Button>
       </div>
     </div>
   );

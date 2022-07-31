@@ -1,6 +1,6 @@
 import { Ctx, PhaseConfig } from "boardgame.io";
-import { GameState, PlayerData } from "../../../types";
-import { forEachAlivePlayer } from "../../utils";
+import { GameState, PlayerData } from "../../types";
+import { forEachAlivePlayer, getTopContributors } from "../../utils";
 
 function checkContributionAllDone(G: GameState, ctx: Ctx): boolean {
   let allDone = true;
@@ -26,30 +26,26 @@ const contribute: PhaseConfig<GameState, Ctx> = {
     }
   },
   onEnd: (G, ctx) => {
-    let maxContributions = 0;
-    let maxContributorList: string[] = [];
-    forEachAlivePlayer(G, (playerData, playerId) => {
-      console.log(playerId, playerData.contributions, maxContributions);
-      if (playerData.contributions > maxContributions) {
-        maxContributions = playerData.contributions;
-        maxContributorList = [playerId];
-      } else if (playerData.contributions === maxContributions) {
-        maxContributorList.push(playerId);
-      }
-    });
+    const topContributors = getTopContributors(G);
 
     // if the list is of length 0, keep the same leader from previous round
-    if (maxContributorList.length === 1) {
-      G.leaderId = maxContributorList[0];
-    } else if (maxContributorList.length > 1) {
+    if (topContributors.length === 1) {
+      G.leaderId = topContributors[0];
+      G.playerData[G.leaderId].influence++;
+    } else if (topContributors.length > 1) {
       G.leaderId = null;
     }
   },
   next: (G, ctx) => {
-    if (G.leaderId === null) {
+    const currentTime = new Date().getTime();
+    if (G.endTime && G.endTime < currentTime) {
+      return "endGame";
+    }
+
+    if (G.leaderId === null && getTopContributors(G).length !== 0) {
       return "voteLeader";
     }
-    return "event";
+    return "takeAction";
   },
   turn: {
     onBegin: (G, ctx) => {
@@ -71,7 +67,7 @@ const contribute: PhaseConfig<GameState, Ctx> = {
             }
           },
           skip: (G, ctx) => {
-            if (ctx.playerID) {
+            if (ctx.playerID != null) {
               G.playerData[ctx.playerID].hasSkipped = true;
             }
             ctx.events?.endStage();

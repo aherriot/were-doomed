@@ -23,15 +23,16 @@ const JoinExistingGame = ({
   const { isError, isLoading } = useQuery(
     [matchId, playerId, clientCredentials],
     () => {
-      return lobbyClient
-        .updatePlayer(GAME_NAME, matchId, {
+      return Promise.all([
+        lobbyClient.getMatch(GAME_NAME, matchId),
+        lobbyClient.updatePlayer(GAME_NAME, matchId, {
           playerID: playerId,
           credentials: clientCredentials,
           data: null,
-        })
-        .then(() => {
-          return true;
-        });
+        }),
+      ]).then(([match]) => {
+        return match.gameover !== true;
+      });
     },
     {
       enabled: !!clientCredentials,
@@ -76,8 +77,7 @@ const JoinExistingGame = ({
   }
 
   return (
-    <div>
-      <h2>Join Existing Game</h2>
+    <div className="text-center">
       <p>You are already part of a game.</p>
       <button
         className="mt-7 focus:shadow-outline focus:outline-none text-slate-500 hover:underline focus:underline hover:text-yellow-500 focus:text-yellow-500 font-semibold"
@@ -87,7 +87,7 @@ const JoinExistingGame = ({
       </button>
       <Link
         className="ml-2 shadow bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-        to={`/play/${matchId}/${playerId}`}
+        to={`/play/${matchId}`}
       >
         Go to game
       </Link>

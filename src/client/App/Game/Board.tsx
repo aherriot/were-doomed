@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { BoardProps } from "boardgame.io/react";
 import { FilteredMetadata } from "boardgame.io";
-import { GameState } from "../../../types";
+import { GameState } from "../../../shared/types";
 import PlayerCards from "./PlayerCards";
 
 import {
@@ -18,7 +18,7 @@ import { CommonProps } from "./types";
 
 const phaseMap: Record<string, React.ComponentType<CommonProps>> = {
   pregame: PhasePreGame,
-  action: PhaseAction,
+  takeAction: PhaseAction,
   contribute: PhaseContribute,
   voteLeader: PhaseVoteLeader,
   event: PhaseEvent,
@@ -39,6 +39,7 @@ const Board = ({
   const playerInfoById = useMemo(() => {
     const result: Record<string, FilteredMetadata[number]> = {};
     matchData?.forEach((data: FilteredMetadata[number]) => {
+      // only players with a name have actually joined the game
       if (data.name) {
         result[data.id] = data;
       }
@@ -49,7 +50,7 @@ const Board = ({
   const PhaseComponent = phaseMap[ctx.phase];
 
   return (
-    <div className="Board">
+    <div className="">
       <Header
         endTime={G.endTime}
         matchID={matchID}
@@ -58,7 +59,7 @@ const Board = ({
       />
       {/* <div>Leader: {G.leaderId}</div> */}
 
-      <div className="flex">
+      <div className="flex max-w-5xl mx-auto">
         <PlayerCards
           G={G}
           ctx={ctx}
@@ -68,7 +69,7 @@ const Board = ({
           setSelectedTarget={setSelectedTarget}
         />
 
-        <div className="p-4">
+        <div className="my-4 ml-1 grow">
           <PhaseComponent
             G={G}
             ctx={ctx}

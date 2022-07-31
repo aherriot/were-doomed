@@ -1,6 +1,8 @@
 type Token = "resources" | "influence";
 type Target = "player" | "bank";
 
+type Action = "produce" | "indoctrinate" | "propagandize" | "invade" | "nuke";
+
 export type Move = {
   name: string;
   gain?: Token;
@@ -18,11 +20,25 @@ export type PlayerData = {
   hasSkipped: boolean;
 };
 
+export type ActionEvent = {
+  action: Action;
+  playerId: string;
+} & (
+  | {
+      action: Exclude<Action, "produce" | "indoctrinate">;
+      targetId: string;
+    }
+  | {
+      action: "produce" | "indoctrinate";
+    }
+);
+
 export type GameState = {
   endTime: null | number;
   projectResources: number;
   leaderId: string | null;
   leaderVotes: Record<string, string>;
+  actionHistory: ActionEvent[];
   bank: {
     resources: number;
     influence: number;

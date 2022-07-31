@@ -1,6 +1,7 @@
 import { useState } from "react";
+import Button from "../components/Button";
 
-const MAX_NAME_LENGTH = 10;
+const MAX_NAME_LENGTH = 8;
 const MIN_NAME_LENGTH = 3;
 
 type ChooseNameProps = {
@@ -44,7 +45,7 @@ const ChooseName = ({ name, setName, setIsEditingName }: ChooseNameProps) => {
           placeholder="Player Name"
           value={nameValue}
           onChange={(e) => setNameValue(e.target.value)}
-          maxLength={10}
+          maxLength={MAX_NAME_LENGTH}
         />
         <input
           className="ml-1 shadow bg-yellow-500 hover:bg-yellow-600 focus:bg-yellow-600 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
@@ -65,12 +66,9 @@ const ChooseName = ({ name, setName, setIsEditingName }: ChooseNameProps) => {
         )}
       </form>
       {name && (
-        <button
-          className="mt-7 focus:shadow-outline focus:outline-none text-slate-500 hover:underline focus:underline hover:text-yellow-500 focus:text-yellow-500 font-semibold"
-          onClick={onCancel}
-        >
+        <Button className="mt-7" isPrimary={false} onClick={onCancel}>
           Go back to lobby
-        </button>
+        </Button>
       )}
     </div>
   );

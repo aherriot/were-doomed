@@ -80,11 +80,11 @@ const GameLobby = () => {
     <QueryClientProvider client={queryClient}>
       <div className="max-w-3xl mx-auto">
         <div className="mt-5 mb-5 mx-auto max-w-md">
-          <div className="bg-caution mx-auto h-5"></div>
-          <h1 className="text-center text-4xl font-bold my-5 uppercase tracking-widest">
-            We're&nbsp;&nbsp;&nbsp;Doomed!
+          <div className="bg-caution mx-auto h-3"></div>
+          <h1 className="text-center text-4xl font-bold my-3 uppercase tracking-wider">
+            We're&nbsp;&nbsp;Doomed!
           </h1>
-          <div className="bg-caution mx-auto h-5"></div>
+          <div className="bg-caution mx-auto h-3"></div>
         </div>
         {content}
       </div>
