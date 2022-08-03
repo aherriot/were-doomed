@@ -58,17 +58,25 @@ const PhaseContribute = ({
     <div>
       <div className="text-center">
         <div>
-          The escape rocket has {G.projectResources}{" "}
-          {G.projectResources === 1 ? "resource" : "resources"} and {seatCount}{" "}
-          {seatCount === 1 ? "seat" : "seats"}
+          <div className="text-2xl font-semibold my-5">Project Status</div>
+          <div className="flex justify-center gap-4">
+            <div className="bg-slate-200 rounded p-3 w-32">
+              <div className="font-bold text-4xl">{G.projectResources}</div>
+              {G.projectResources === 1 ? "resource" : "resources"}
+            </div>
+            <div className="bg-slate-200 rounded p-3 w-32">
+              <div className="font-bold text-4xl">{seatCount}</div>
+              {seatCount === 1 ? "seat" : "seats"}
+            </div>
+          </div>
         </div>
-        <div>
+        <div className="text-sm mt-2">
           {nextSeat === -1
-            ? "10 is the maximum number of seats."
-            : `The next seat will be added at ${nextSeat} resources.`}
+            ? "10 is the maximum number of seats"
+            : `The next seat will be added at ${nextSeat} resources`}
         </div>
       </div>
-      <div className="text-center mt-5">
+      <div className="text-center mt-10">
         Total contributions this round: {totalThisRound}
       </div>
       {ranking}

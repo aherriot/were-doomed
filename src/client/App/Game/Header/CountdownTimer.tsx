@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import clsx from "clsx";
 
 type CountdownTimerProps = {
   endTime: number;
@@ -25,7 +26,11 @@ const CountdownTimer = ({ endTime }: CountdownTimerProps) => {
   const seconds = Math.floor(timeLeft % 60);
 
   return (
-    <div className={"CountdownTimer " + (timeLeft < 60 ? "warning" : "")}>
+    <div
+      className={clsx("text-xl font-semibold", {
+        "text-red-500": timeLeft < 60,
+      })}
+    >
       {minutes.toFixed(0).padStart(2, "0")}:
       {seconds.toFixed(0).padStart(2, "0")}
     </div>

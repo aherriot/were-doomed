@@ -34,7 +34,6 @@ const WereDoomed: Game<GameState> = {
     }
 
     return {
-      endTime: null,
       projectResources: 0,
       leaderId: null,
       leaderVotes: {},
@@ -44,6 +43,13 @@ const WereDoomed: Game<GameState> = {
         influence: TOTAL_INFLUENCE_TOKENS,
       },
       playerData,
+      endGame: {
+        votes: {},
+        winners: [],
+        candidates: [],
+        seatsRemaining: 0,
+        time: null,
+      },
     };
   },
 

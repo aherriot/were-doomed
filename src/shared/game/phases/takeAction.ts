@@ -186,6 +186,12 @@ const takeAction: PhaseConfig<GameState, Ctx> = {
       first,
       next: next,
     },
+    onMove: (G, ctx) => {
+      const currentTime = new Date().getTime();
+      if (G.endGame.time && G.endGame.time < currentTime) {
+        ctx.events?.endPhase();
+      }
+    },
   },
   moves: {
     produce,
@@ -196,7 +202,7 @@ const takeAction: PhaseConfig<GameState, Ctx> = {
   },
   next: (G, ctx) => {
     const currentTime = new Date().getTime();
-    if (G.endTime && G.endTime < currentTime) {
+    if (G.endGame.time && G.endGame.time < currentTime) {
       return "endGame";
     }
     return "contribute";

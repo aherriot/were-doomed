@@ -34,10 +34,16 @@ export type ActionEvent = {
 );
 
 export type GameState = {
-  endTime: null | number;
   projectResources: number;
   leaderId: string | null;
   leaderVotes: Record<string, string>;
+  endGame: {
+    votes: Record<string, string[]>;
+    winners: string[];
+    candidates: string[];
+    seatsRemaining: number;
+    time: null | number;
+  };
   actionHistory: ActionEvent[];
   bank: {
     resources: number;

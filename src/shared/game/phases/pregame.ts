@@ -17,16 +17,17 @@ const pregame: PhaseConfig<GameState, Ctx> = {
       // for (let id in G.playerData) {
       // G.playerData[id].isAlive = false;
       // }
-      G.endTime = computeEndDate();
+      // G.endGame.time = computeEndDate();
     },
     stages: {
       pregame: {
         moves: {
-          startGame: (G, ctx) => {
+          startGame: (G, ctx, gameLengthInMinutes = 15) => {
             if (ctx.playerID !== "0") {
               return INVALID_MOVE;
             }
             G.playerData["0"].isAlive = true;
+            G.endGame.time = computeEndDate(gameLengthInMinutes);
             ctx.events?.endPhase();
           },
           markReady: (G, ctx) => {

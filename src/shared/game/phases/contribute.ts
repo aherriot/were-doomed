@@ -38,7 +38,7 @@ const contribute: PhaseConfig<GameState, Ctx> = {
   },
   next: (G, ctx) => {
     const currentTime = new Date().getTime();
-    if (G.endTime && G.endTime < currentTime) {
+    if (G.endGame.time && G.endGame.time < currentTime) {
       return "endGame";
     }
 

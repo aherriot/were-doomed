@@ -41,7 +41,6 @@ const Game = () => {
         }),
       ])
         .then(([match]) => {
-          console.log("match", match);
           setIsValid(match.gameover !== true);
         })
         .catch(() => {

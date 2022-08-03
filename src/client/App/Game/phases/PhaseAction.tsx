@@ -61,7 +61,7 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            produces 2 resources
+            produced 2 resources
           </span>
         );
         break;
@@ -71,7 +71,7 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            indoctrinates and gains 1 influence
+            indoctrinated and gains 1 influence
           </span>
         );
         break;
@@ -81,7 +81,7 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            propagandizes by stealing 1 influence from{" "}
+            propagandized by stealing 1 influence from{" "}
             <span className="font-semibold">
               {playerInfoById[action.targetId].name}
             </span>
@@ -94,11 +94,11 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            invades{" "}
+            invaded{" "}
             <span className="font-semibold">
               {playerInfoById[action.targetId].name}
             </span>{" "}
-            and steals 2 resources.
+            and stole 2 resources.
           </span>
         );
         break;
@@ -108,7 +108,7 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            nukes{" "}
+            nuked{" "}
             <span className="font-semibold">
               {playerInfoById[action.targetId].name}
             </span>
@@ -194,7 +194,7 @@ const PhaseAction = ({
               className="bg-purple-200/50 hover:bg-purple-200"
               icon={<WrenchIcon />}
               onClick={() => moves.produce()}
-              disabled={!isCurrentPlayerTurn}
+              disabled={!isCurrentPlayerTurn && G.bank.resources >= 2}
             />
             <ActionButton
               title="Indoctrinate"
@@ -202,7 +202,7 @@ const PhaseAction = ({
               className="bg-blue-200/50 hover:bg-blue-200"
               icon={<BroadcastIcon />}
               onClick={() => moves.indoctrinate()}
-              disabled={!isCurrentPlayerTurn}
+              disabled={!isCurrentPlayerTurn && G.bank.influence >= 1}
             />
             {!selectedTarget &&
               isCurrentPlayerTurn &&

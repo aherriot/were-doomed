@@ -47,7 +47,7 @@ const MOVES: Record<Action, Move> = {
 };
 
 export const RESOURCES_TO_SEAT = [
-  { resources: 40, seats: 1 },
+  { resources: 2, seats: 1 },
   { resources: 50, seats: 2 },
   { resources: 60, seats: 3 },
   { resources: 70, seats: 4 },
@@ -80,10 +80,10 @@ export function getTopContributors(G: GameState): string[] {
   return topContributorList;
 }
 
-export function computeEndDate(): number {
+export function computeEndDate(gameLengthInMinutes = 15): number {
   const second = 1000;
   const minutes = second * 60;
-  return new Date().getTime() + 15 * minutes + second;
+  return new Date().getTime() + gameLengthInMinutes * minutes + second;
 }
 
 export function setAlivePlayersToStage(G: GameState, ctx: Ctx, stage: string) {
@@ -179,26 +179,69 @@ export function forEachAlivePlayer(
   }
 }
 
-export function getPlayersToVoteOn(G: GameState): string[] {
-  const numOfSeats = getNumberOfSeats(G.projectResources);
+export function getPlayersToVoteOn(G: GameState): {
+  winners: string[];
+  candidates: string[];
+  seatsRemaining: number;
+} {
+  let seatsRemaining = getNumberOfSeats(G.projectResources);
   const players: { id: string; influence: number }[] = [];
+  const influenceToIdsMap: Record<number, string[]> = {};
+  const winners: string[] = [];
 
+  // generate a list of living players and map their influence to their ids
   for (let id in G.playerData) {
     if (G.playerData[id].isAlive) {
-      players.push({ id: id, influence: G.playerData[id].influence });
+      const influence = G.playerData[id].influence;
+      players.push({ id, influence });
+      if (influenceToIdsMap[influence]) {
+        influenceToIdsMap[influence].push(id);
+      } else {
+        influenceToIdsMap[influence] = [id];
+      }
     }
   }
 
+  // sort players by influence
   players.sort((a, b) => b.influence - a.influence);
 
-  const tiedPlayers: string[] = [];
+  for (let i = 0; i < players.length; ) {
+    const ids = influenceToIdsMap[players[i].influence];
+    if (seatsRemaining === 0) {
+      break;
+    }
+    if (ids.length > seatsRemaining) {
+      return { winners, candidates: ids, seatsRemaining };
+    } else {
+      winners.push(...ids);
+      i += ids.length;
+      seatsRemaining -= ids.length;
+    }
+  }
 
-  // for (let i = 1; i < players.length; i++) {
-  // if (players[i].influence === players[i - 1].influence) {
-  // i--;
-  // }
-  // }
+  return { winners, candidates: [], seatsRemaining };
+}
 
-  console.log("players", players);
-  return tiedPlayers;
+export function getVotesPerPlayer(
+  winners: string[],
+  candidates: string[],
+  endGameVotes: Record<string, string[]>
+): Record<string, number> {
+  const votesPerPlayer: Record<string, number> = {};
+
+  winners.forEach((playerId) => {
+    const votes = endGameVotes[playerId];
+    votes?.forEach((vote) => {
+      votesPerPlayer[vote] = (votesPerPlayer[vote] ?? 0) + 1;
+    });
+  });
+
+  candidates.forEach((playerId) => {
+    const votes = endGameVotes[playerId];
+    votes?.forEach((vote) => {
+      votesPerPlayer[vote] = (votesPerPlayer[vote] ?? 0) + 1;
+    });
+  });
+
+  return votesPerPlayer;
 }

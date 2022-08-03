@@ -11,6 +11,7 @@ import {
   PhaseVoteLeader,
   PhaseEvent,
   PhaseEndGame,
+  PhaseResults,
 } from "./phases";
 import Header from "./Header";
 
@@ -22,7 +23,8 @@ const phaseMap: Record<string, React.ComponentType<CommonProps>> = {
   contribute: PhaseContribute,
   voteLeader: PhaseVoteLeader,
   event: PhaseEvent,
-  endgame: PhaseEndGame,
+  endGame: PhaseEndGame,
+  results: PhaseResults,
 };
 
 const Board = ({
@@ -52,7 +54,7 @@ const Board = ({
   return (
     <div className="">
       <Header
-        endTime={G.endTime}
+        endTime={G.endGame.time}
         matchID={matchID}
         playerID={playerID}
         credentials={credentials}
