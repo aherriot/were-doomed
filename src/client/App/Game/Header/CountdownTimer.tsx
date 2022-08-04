@@ -12,10 +12,14 @@ function computeDiff(endTime: number): number {
 
 const CountdownTimer = ({ endTime }: CountdownTimerProps) => {
   const [diff, setDiff] = useState<number>(computeDiff(endTime));
+  const [visible, setVisible] = useState<boolean>(true);
   useEffect(() => {
     let timerId: number;
     timerId = window.setInterval(() => {
       setDiff(computeDiff(endTime));
+      if (diff < 60) {
+        setVisible((visible) => !visible);
+      }
     }, 500);
 
     return () => window.clearInterval(timerId);
@@ -28,7 +32,8 @@ const CountdownTimer = ({ endTime }: CountdownTimerProps) => {
   return (
     <div
       className={clsx("text-xl font-semibold", {
-        "text-red-500": timeLeft < 60,
+        "text-red-500": timeLeft < 60 * 3,
+        "text-transparent": !visible,
       })}
     >
       {minutes.toFixed(0).padStart(2, "0")}:

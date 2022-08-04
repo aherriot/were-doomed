@@ -4,6 +4,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { GAME_NAME, MAX_NUMBER_OF_PLAYERS } from "../../../shared/utils";
 import Button from "../components/Button";
+import NameList from "../components/NameList";
 
 type MatchListProps = {
   lobbyClient: LobbyClient;
@@ -98,15 +99,16 @@ const MatchList = ({
                     className="inline text-yellow-500 focus:underline hover:underline hover:text-yellow-600 focus:text-yellow-600 focus:shadow-outline focus:outline-none font-semibold"
                     onClick={() => joinMatch({ matchId: game.matchID })}
                   >
-                    join
+                    Join
                   </button>
                 </>
               )}
             </div>
             <div className="text-md">
               Players:{" "}
-              {joinedPlayers.map((player) => player.name).join(", ") ||
-                "No players yet"}
+              <NameList>
+                {joinedPlayers.map((player) => player.name ?? "")}
+              </NameList>
             </div>
           </div>
         );

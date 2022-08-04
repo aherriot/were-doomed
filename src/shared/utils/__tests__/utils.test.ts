@@ -160,6 +160,34 @@ describe("utils", () => {
       expect(seatsRemaining).toBe(1);
     });
 
+    it("returns a winner", () => {
+      const G: Pick<GameState, "playerData" | "projectResources"> = {
+        projectResources: 45,
+        playerData: {
+          0: {
+            resources: 0,
+            influence: 3,
+            contributions: 0,
+            isAlive: true,
+            hasSkipped: false,
+          },
+          1: {
+            resources: 2,
+            influence: 2,
+            contributions: 0,
+            isAlive: true,
+            hasSkipped: false,
+          },
+        },
+      };
+
+      const { winners, candidates, seatsRemaining } = getPlayersToVoteOn(
+        G as GameState
+      );
+
+      expect(winners).toEqual(["0"]);
+    });
+
     it("returns none when there is not enough seats for anyone", () => {
       const G: Pick<GameState, "playerData" | "projectResources"> = {
         projectResources: 0,

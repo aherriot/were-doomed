@@ -11,10 +11,29 @@ const endGame: PhaseConfig<GameState, Ctx> = {
     G.endGame.seatsRemaining = seatsRemaining;
   },
   onEnd: (G, ctx) => {
-    // TODO: set the winners
+    const { winners, candidates, seatsRemaining } = G.endGame;
+
+    const votesPerPlayer = getVotesPerPlayer(
+      winners,
+      candidates,
+      G.endGame.votes
+    );
+
+    const votes: { id: string; votes: number }[] = [];
+    for (let id in votesPerPlayer) {
+      votes.push({ id, votes: votesPerPlayer[id] });
+    }
+
+    votes.sort((a, b) => b.votes - a.votes);
+
+    votes.forEach((vote, i) => {
+      if (i < seatsRemaining) {
+        G.endGame.winners.push(vote.id);
+      }
+    });
   },
   endIf: (G, ctx) => {
-    const { winners, candidates, seatsRemaining } = G.endGame;
+    const { winners, candidates, seatsRemaining } = getPlayersToVoteOn(G);
 
     const requiredVotes = (winners.length + candidates.length) * seatsRemaining;
 
@@ -43,11 +62,6 @@ const endGame: PhaseConfig<GameState, Ctx> = {
       requiredVotes === totalVotes &&
       votes[seatsRemaining - 1]?.votes > (votes[seatsRemaining]?.votes ?? 0)
     ) {
-      votes.forEach((vote, i) => {
-        if (i < seatsRemaining) {
-          G.endGame.winners.push(vote.id);
-        }
-      });
       return true;
     }
 

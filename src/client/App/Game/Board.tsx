@@ -16,6 +16,7 @@ import {
 import Header from "./Header";
 
 import { CommonProps } from "./types";
+import WindowSizeWarning from "../components/WindowSizeWarning";
 
 const phaseMap: Record<string, React.ComponentType<CommonProps>> = {
   pregame: PhasePreGame,
@@ -59,7 +60,7 @@ const Board = ({
         playerID={playerID}
         credentials={credentials}
       />
-      {/* <div>Leader: {G.leaderId}</div> */}
+      <WindowSizeWarning />
 
       <div className="flex max-w-5xl mx-auto">
         <PlayerCards
@@ -71,7 +72,7 @@ const Board = ({
           setSelectedTarget={setSelectedTarget}
         />
 
-        <div className="my-4 ml-1 grow">
+        <div className="my-2 grow">
           <PhaseComponent
             G={G}
             ctx={ctx}

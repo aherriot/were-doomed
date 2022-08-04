@@ -166,9 +166,9 @@ const PhaseAction = ({
 
   const turnIndicator = (
     <div
-      className={clsx("py-1 px-4 text-center", {
+      className={clsx("py-1 px-4 text-center rounded mb-1", {
         "bg-green-200": isCurrentPlayerTurn,
-        "bg-slate-100": !isCurrentPlayerTurn,
+        "bg-slate-200/50": !isCurrentPlayerTurn,
       })}
     >
       It is{" "}
@@ -182,7 +182,7 @@ const PhaseAction = ({
   );
 
   return (
-    <div className="mr-1">
+    <div className="mr-2">
       {turnIndicator}
       <div className="w-full flex">
         <ActionHistory G={G} playerInfoById={playerInfoById} />

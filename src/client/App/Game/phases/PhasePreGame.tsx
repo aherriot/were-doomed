@@ -1,5 +1,6 @@
 import { ReactElement, useState } from "react";
 import Button from "../../components/Button";
+import NameList from "../../components/NameList";
 import { CommonProps } from "../types";
 
 const PhasePreGame = ({
@@ -21,14 +22,16 @@ const PhasePreGame = ({
 
   return (
     <div className="mt-10 text-center">
-      <div>
+      <div className="max-w-lg mx-auto text-left mb-4">
         The end of the world is upon us. As a world leader, you must help build
-        a space ship to escape the planet.
+        a space ship to escape the planet. The more you contribute to the
+        project the seats available to world leaders. However, world leaders
+        will board the ship in order of influence.
       </div>
       {waitingForPlayers.length > 0 ? (
         <div>
           Waiting for the following players to confirm:{" "}
-          {waitingForPlayers.join(", ")}
+          <NameList>{waitingForPlayers}</NameList>
         </div>
       ) : (
         <div>
@@ -43,10 +46,10 @@ const PhasePreGame = ({
             <span className="font-semibold"> Game Length</span>
             <select
               value={gameLength}
-              onChange={(e) => setGameLength(parseInt(e.target.value, 10))}
+              onChange={(e) => setGameLength(parseFloat(e.target.value))}
               className="ml-4 text-md bg-slate-200 px-2 pr-4 py-2 rounded focus:outline-none focus:bg-slate-400 cursor-pointer"
             >
-              <option value={1}>1 minute</option>
+              <option value={0.3}>1 minute</option>
               <option value={4}>4 minutes</option>
               <option value={6}>6 minutes</option>
               <option value={8}>8 minutes</option>
