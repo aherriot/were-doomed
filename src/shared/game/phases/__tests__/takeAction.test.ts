@@ -8,6 +8,7 @@ const generatePlayerData = (isAlive: boolean): PlayerData => ({
   influence: 0,
   contributions: 0,
   hasSkipped: false,
+  government: "democracy",
 });
 
 describe("first", () => {
@@ -170,6 +171,7 @@ describe("produce", () => {
           influence: 0,
           contributions: 0,
           hasSkipped: false,
+          government: "democracy",
         },
         1: {
           isAlive: true,
@@ -177,6 +179,7 @@ describe("produce", () => {
           influence: 0,
           contributions: 0,
           hasSkipped: false,
+          government: "democracy",
         },
       },
     };

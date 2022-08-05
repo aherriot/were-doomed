@@ -53,30 +53,40 @@ const next = (G: GameState, ctx: Ctx) => {
 
 // Gain 2 resources from the bank
 const produce = (G: GameState, ctx: Ctx) => {
-  if (G.bank.resources < 2) {
+  const playerData = G.playerData[ctx.currentPlayer];
+  const amount = playerData.government === "technocracy" ? 3 : 2;
+
+  if (G.bank.resources < amount) {
     return INVALID_MOVE;
   }
 
-  G.playerData[ctx.currentPlayer].resources += 2;
-  G.bank.resources -= 2;
+  G.playerData[ctx.currentPlayer].resources += amount;
+  G.bank.resources -= amount;
+
   G.actionHistory.push({
     action: "produce",
     playerId: ctx.currentPlayer,
+    amount,
   });
+
   ctx.events?.endTurn();
 };
 
 // Gain 1 influence from the bank
 const indoctrinate = (G: GameState, ctx: Ctx) => {
-  if (G.bank.influence < 1) {
+  const playerData = G.playerData[ctx.currentPlayer];
+  const amount = playerData.government === "theocracy" ? 2 : 1;
+
+  if (G.bank.influence < amount) {
     return INVALID_MOVE;
   }
 
-  G.playerData[ctx.currentPlayer].influence += 1;
-  G.bank.influence -= 1;
+  playerData.influence += amount;
+  G.bank.influence -= amount;
   G.actionHistory.push({
     action: "indoctrinate",
     playerId: ctx.currentPlayer,
+    amount,
   });
   ctx.events?.endTurn();
 };
@@ -89,15 +99,18 @@ const propagandize = (G: GameState, ctx: Ctx, targetId: string) => {
   const playerData = G.playerData[ctx.currentPlayer];
   const targetData = G.playerData[targetId];
 
-  if (playerData.resources < 1 || targetData.influence < 1) {
+  const playerCost = playerData.government === "corporatocracy" ? 0 : 1;
+
+  if (playerData.resources < playerCost || targetData.influence < 1) {
     return INVALID_MOVE;
   }
 
   playerData.influence += 1;
   targetData.influence -= 1;
 
-  playerData.resources -= 1;
-  G.bank.resources += 1;
+  playerData.resources -= playerCost;
+  G.bank.resources += playerCost;
+
   G.actionHistory.push({
     action: "propagandize",
     playerId: ctx.currentPlayer,
@@ -115,7 +128,9 @@ const invade = (G: GameState, ctx: Ctx, targetId: string) => {
   const playerData = G.playerData[ctx.currentPlayer];
   const targetData = G.playerData[targetId];
 
-  if (playerData.influence < 1) {
+  const playerCost = playerData.government === "democracy" ? 0 : 1;
+
+  if (playerData.influence < playerCost) {
     return INVALID_MOVE;
   }
 
@@ -126,8 +141,8 @@ const invade = (G: GameState, ctx: Ctx, targetId: string) => {
   playerData.resources += 2;
   targetData.resources -= 2;
 
-  playerData.influence -= 1;
-  G.bank.influence += 1;
+  playerData.influence -= playerCost;
+  G.bank.influence += playerCost;
 
   G.actionHistory.push({
     action: "invade",
@@ -143,8 +158,11 @@ const nuke = (G: GameState, ctx: Ctx, targetId: string) => {
   if (!targetId) {
     return INVALID_MOVE;
   }
+  const playerData = G.playerData[ctx.currentPlayer];
 
-  if (G.playerData[ctx.currentPlayer].resources < 8) {
+  const playerCost = playerData.government === "autocracy" ? 5 : 8;
+
+  if (playerData.resources < playerCost) {
     return INVALID_MOVE;
   }
 
@@ -160,7 +178,7 @@ const nuke = (G: GameState, ctx: Ctx, targetId: string) => {
   G.bank.resources += targetData.resources;
   targetData.resources = 0;
 
-  G.playerData[ctx.currentPlayer].resources -= 8;
+  playerData.resources -= playerCost;
 
   G.actionHistory.push({
     action: "nuke",

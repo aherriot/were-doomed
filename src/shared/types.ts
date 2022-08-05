@@ -3,6 +3,13 @@ type Target = "player" | "bank";
 
 type Action = "produce" | "indoctrinate" | "propagandize" | "invade" | "nuke";
 
+export type Government =
+  | "democracy"
+  | "corporatocracy"
+  | "theocracy"
+  | "autocracy"
+  | "technocracy";
+
 export type Move = {
   name: string;
   gain?: Token;
@@ -18,6 +25,7 @@ export type PlayerData = {
   contributions: number;
   isAlive: boolean;
   hasSkipped: boolean;
+  government: Government | null;
 };
 
 export type ActionEvent = {
@@ -30,6 +38,7 @@ export type ActionEvent = {
     }
   | {
       action: "produce" | "indoctrinate";
+      amount: number;
     }
 );
 

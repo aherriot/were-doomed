@@ -9,41 +9,7 @@ import GunIcon from "../../components/icons/GunIcon";
 import SkullIcon from "../../components/icons/SkullIcon";
 import WrenchIcon from "../../components/icons/WrenchIcon";
 import { CommonProps } from "../types";
-
-type ActionButtonProps = {
-  className: string;
-  icon: ReactElement;
-  title: string;
-  description: string;
-  disabled: boolean;
-  onClick: () => void;
-};
-
-const ActionButton = ({
-  className,
-  onClick,
-  icon,
-  title,
-  description,
-  disabled = true,
-}: ActionButtonProps) => {
-  return (
-    <button
-      className={clsx(`w-full items-center flex py-2 my-1`, {
-        "bg-slate-200": disabled,
-        [className]: !disabled,
-      })}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      <div className="mx-3">{icon}</div>
-      <div className="text-left">
-        <div className="font-semibold">{title}</div>
-        <div className="">{description}</div>
-      </div>
-    </button>
-  );
-};
+import ActionButton from "./ActionButton";
 
 const ActionHistory = ({
   G,
@@ -61,7 +27,7 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            produced 2 resources
+            produced {action.amount} resources
           </span>
         );
         break;
@@ -71,7 +37,7 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            indoctrinated and gains 1 influence
+            indoctrinated and gains {action.amount} influence
           </span>
         );
         break;
@@ -81,10 +47,11 @@ const ActionHistory = ({
             <span className="font-semibold">
               {playerInfoById[action.playerId]?.name}
             </span>{" "}
-            propagandized by stealing 1 influence from{" "}
+            propagandized{" "}
             <span className="font-semibold">
               {playerInfoById[action.targetId].name}
-            </span>
+            </span>{" "}
+            and stole 1 influence.
           </span>
         );
         break;
@@ -181,6 +148,8 @@ const PhaseAction = ({
     </div>
   );
 
+  const government = playerID ? G.playerData[playerID].government : null;
+
   return (
     <div className="mr-2">
       {turnIndicator}
@@ -190,19 +159,33 @@ const PhaseAction = ({
           <div className="">
             <ActionButton
               title="Produce"
-              description="Gain 2 resources"
+              description={
+                government === "technocracy"
+                  ? "Gain 3 resources"
+                  : "Gain 2 resources"
+              }
               className="bg-purple-200/50 hover:bg-purple-200"
-              icon={<WrenchIcon />}
+              icon={<WrenchIcon className="w6 h-6" />}
               onClick={() => moves.produce()}
-              disabled={!isCurrentPlayerTurn && G.bank.resources >= 2}
+              disabled={
+                !isCurrentPlayerTurn ||
+                G.bank.resources < (government === "technocracy" ? 3 : 2)
+              }
             />
             <ActionButton
               title="Indoctrinate"
-              description="Gain 1 influence"
+              description={
+                government === "theocracy"
+                  ? "Gain 2 influence"
+                  : "Gain 1 influence"
+              }
               className="bg-blue-200/50 hover:bg-blue-200"
               icon={<BroadcastIcon />}
               onClick={() => moves.indoctrinate()}
-              disabled={!isCurrentPlayerTurn && G.bank.influence >= 1}
+              disabled={
+                !isCurrentPlayerTurn ||
+                G.bank.influence < (government === "theocracy" ? 2 : 1)
+              }
             />
             {!selectedTarget &&
               isCurrentPlayerTurn &&
@@ -214,7 +197,11 @@ const PhaseAction = ({
               )}
             <ActionButton
               title="Propagandize"
-              description="Steal 1 influence from another player by spending 1 resource"
+              description={
+                government === "corporatocracy"
+                  ? "Steal 1 influence from another player without cost"
+                  : "Steal 1 influence from another player by spending 1 resource"
+              }
               className="bg-green-200/50 hover:bg-green-200"
               icon={<BullhornIcon />}
               onClick={() => {
@@ -224,13 +211,18 @@ const PhaseAction = ({
               disabled={
                 !isCurrentPlayerTurn ||
                 selectedTarget == null ||
-                G.playerData[playerID].resources < 1 ||
+                G.playerData[playerID].resources <
+                  (government === "corporatocracy" ? 0 : 1) ||
                 G.playerData[selectedTarget].influence < 1
               }
             />
             <ActionButton
               title="Invade"
-              description="Steal 2 resources from another player by spending 1 influence"
+              description={
+                government === "democracy"
+                  ? "Steal 2 resources from another player without cost"
+                  : "Steal 2 resources from another player by spending 1 influence"
+              }
               className="bg-yellow-200/50 hover:bg-yellow-200"
               icon={<GunIcon />}
               onClick={() => {
@@ -240,20 +232,26 @@ const PhaseAction = ({
               disabled={
                 !isCurrentPlayerTurn ||
                 selectedTarget == null ||
-                G.playerData[playerID].influence < 1 ||
+                G.playerData[playerID].influence <
+                  (government === "democracy" ? 0 : 1) ||
                 G.playerData[selectedTarget].resources < 2
               }
             />
             <ActionButton
               title="Nuke"
-              description="Spend 8 resources to eliminate a player from the game permanently"
+              description={
+                government === "autocracy"
+                  ? "Spend 5 resources to eliminate a player from the game permanently"
+                  : "Spend 8 resources to eliminate a player from the game permanently"
+              }
               className="bg-red-200/50 hover:bg-red-200"
-              icon={<SkullIcon />}
+              icon={<SkullIcon className="w6 h-6" />}
               onClick={() => setConfirmNuke(true)}
               disabled={
                 !isCurrentPlayerTurn ||
                 selectedTarget == null ||
-                G.playerData[playerID].resources < 8
+                G.playerData[playerID].resources <
+                  (government === "autocracy" ? 5 : 8)
               }
             />
           </div>

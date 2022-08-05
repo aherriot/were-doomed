@@ -17,6 +17,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
           "1": {
             isAlive: true,
@@ -24,6 +25,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
           "2": {
             isAlive: true,
@@ -31,6 +33,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
         },
       };
@@ -46,6 +49,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
           "1": {
             isAlive: true,
@@ -53,6 +57,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
           "2": {
             isAlive: true,
@@ -60,6 +65,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
         },
       };
@@ -75,6 +81,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
           "1": {
             isAlive: true,
@@ -82,6 +89,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
           "2": {
             isAlive: true,
@@ -89,6 +97,7 @@ describe("utils", () => {
             resources: 0,
             influence: 0,
             hasSkipped: true,
+            government: "democracy",
           },
         },
       };
@@ -119,6 +128,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
           "1": {
             isAlive: true,
@@ -126,6 +136,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
           "2": {
             isAlive: true,
@@ -133,6 +144,7 @@ describe("utils", () => {
             resources: 0,
             influence: 3,
             hasSkipped: true,
+            government: "democracy",
           },
           "3": {
             isAlive: true,
@@ -140,6 +152,7 @@ describe("utils", () => {
             resources: 0,
             influence: 1,
             hasSkipped: true,
+            government: "democracy",
           },
           "4": {
             isAlive: true,
@@ -147,6 +160,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
         },
       };
@@ -160,34 +174,6 @@ describe("utils", () => {
       expect(seatsRemaining).toBe(1);
     });
 
-    it("returns a winner", () => {
-      const G: Pick<GameState, "playerData" | "projectResources"> = {
-        projectResources: 45,
-        playerData: {
-          0: {
-            resources: 0,
-            influence: 3,
-            contributions: 0,
-            isAlive: true,
-            hasSkipped: false,
-          },
-          1: {
-            resources: 2,
-            influence: 2,
-            contributions: 0,
-            isAlive: true,
-            hasSkipped: false,
-          },
-        },
-      };
-
-      const { winners, candidates, seatsRemaining } = getPlayersToVoteOn(
-        G as GameState
-      );
-
-      expect(winners).toEqual(["0"]);
-    });
-
     it("returns none when there is not enough seats for anyone", () => {
       const G: Pick<GameState, "playerData" | "projectResources"> = {
         projectResources: 0,
@@ -198,6 +184,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
           "1": {
             isAlive: true,
@@ -205,6 +192,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
         },
       };
@@ -227,6 +215,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
           "1": {
             isAlive: true,
@@ -234,6 +223,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
           "2": {
             isAlive: true,
@@ -241,6 +231,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
         },
       };
@@ -264,6 +255,7 @@ describe("utils", () => {
             resources: 0,
             influence: 3,
             hasSkipped: true,
+            government: "democracy",
           },
           "1": {
             isAlive: true,
@@ -271,6 +263,7 @@ describe("utils", () => {
             resources: 0,
             influence: 2,
             hasSkipped: true,
+            government: "democracy",
           },
           "2": {
             isAlive: true,
@@ -278,6 +271,7 @@ describe("utils", () => {
             resources: 0,
             influence: 1,
             hasSkipped: true,
+            government: "democracy",
           },
         },
       };
@@ -304,27 +298,6 @@ describe("utils", () => {
           "6": ["6"],
         })
       ).toEqual({ "4": 4, "5": 2, "6": 1 });
-    });
-  });
-
-  describe("endGameVoteWinner", () => {
-    it("returns the winner", () => {
-      const votes = [
-        { id: "1", votes: 2 },
-        { id: "2", votes: 1 },
-        { id: "3", votes: 0 },
-      ];
-
-      const requiredVotes = 4;
-      const seatsRemaining = 2;
-      votes.sort((a, b) => b.votes - a.votes);
-      const winner =
-        votes[seatsRemaining - 1]?.votes > votes[seatsRemaining]?.votes;
-      console.log({ winner });
-
-      console.log(votes);
-
-      // expect(votes).toEqual(["1"]);
     });
   });
 });

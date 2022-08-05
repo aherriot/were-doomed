@@ -11,7 +11,8 @@ const PhaseResults = ({ G, playerInfoById }: CommonProps) => {
       <div className="text-4xl mt-5">Game Over</div>
       {winners.length > 0 && (
         <div className="mt-4">
-          Congratulations to <NameList>{winners}</NameList> escaping the planet.
+          Congratulations to <NameList>{winners}</NameList> for escaping the
+          planet.
         </div>
       )}
       {winners.length === 0 && (

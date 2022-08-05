@@ -47,7 +47,7 @@ const MOVES: Record<Action, Move> = {
 };
 
 export const RESOURCES_TO_SEAT = [
-  { resources: 2, seats: 1 },
+  { resources: 40, seats: 1 },
   { resources: 50, seats: 2 },
   { resources: 60, seats: 3 },
   { resources: 70, seats: 4 },

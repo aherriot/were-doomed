@@ -30,6 +30,7 @@ const WereDoomed: Game<GameState> = {
         contributions: 0,
         isAlive: false,
         hasSkipped: false,
+        government: null,
       };
     }
 

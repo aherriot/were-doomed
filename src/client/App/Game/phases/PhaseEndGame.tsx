@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { getPlayersToVoteOn, getVotesPerPlayer } from "src/shared/utils";
+import { getVotesPerPlayer } from "src/shared/utils";
 import NameList from "../../components/NameList";
 import { CommonProps } from "../types";
 

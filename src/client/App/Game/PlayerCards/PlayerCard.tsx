@@ -44,12 +44,20 @@ const PlayerCard = ({
       disabled={!isTargetable}
       onClick={onClick}
     >
-      {isLeader && <CrownIcon className="block fill-yellow-500 mx-auto" />}
       <div title={playerId} className="font-semibold">
         {playerInfo?.name}
 
         {isSelf && (
           <span className="text-gray-500/75 font-normal text-sm"> (you)</span>
+        )}
+      </div>
+      <div className="text-sm capitalize -mx-2 px-2 py-1  border-b-2 border-slate-300/50 flex justify-between items-center">
+        <span>{playerData.government ?? "\u00a0"}</span>
+        {isLeader && (
+          <CrownIcon
+            className="fill-yellow-500 w-4 h-4"
+            title="The leader goes first in the action phase."
+          />
         )}
       </div>
       <div className="text-sm">Resources: {playerData.resources}</div>
