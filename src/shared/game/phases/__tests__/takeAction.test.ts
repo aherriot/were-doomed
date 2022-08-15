@@ -13,8 +13,20 @@ const generatePlayerData = (isAlive: boolean): PlayerData => ({
 
 describe("first", () => {
   it("returns the playOrderPos of the leader if there is a leader", () => {
-    const G: Pick<GameState, "leaderId"> = {
+    const G: Pick<GameState, "playerData" | "leaderId"> = {
       leaderId: "1",
+      playerData: {
+        0: generatePlayerData(true),
+        1: generatePlayerData(true),
+        2: generatePlayerData(false),
+        3: generatePlayerData(false),
+        4: generatePlayerData(true),
+        5: generatePlayerData(true),
+        6: generatePlayerData(false),
+        7: generatePlayerData(false),
+        8: generatePlayerData(true),
+        9: generatePlayerData(false),
+      },
     };
 
     const ctx: Pick<Ctx, "playOrder" | "playOrderPos"> = {
@@ -27,13 +39,38 @@ describe("first", () => {
     G.leaderId = "5";
     expect(first(G as GameState, ctx as Ctx)).toBe(5);
 
-    G.leaderId = "10";
+    G.leaderId = "9";
     expect(first(G as GameState, ctx as Ctx)).toBe(0);
   });
 
   it("returns first alive player if there is no leader", () => {
     const G: Pick<GameState, "leaderId" | "playerData"> = {
       leaderId: null,
+      playerData: {
+        0: generatePlayerData(false),
+        1: generatePlayerData(false),
+        2: generatePlayerData(false),
+        3: generatePlayerData(false),
+        4: generatePlayerData(true),
+        5: generatePlayerData(false),
+        6: generatePlayerData(false),
+        7: generatePlayerData(false),
+        8: generatePlayerData(true),
+        9: generatePlayerData(false),
+      },
+    };
+
+    const ctx: Pick<Ctx, "playOrder" | "playOrderPos"> = {
+      playOrder: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      playOrderPos: 1,
+    };
+
+    expect(first(G as GameState, ctx as Ctx)).toBe(4);
+  });
+
+  it("returns the first alive player if the leader is dead", () => {
+    const G: Pick<GameState, "leaderId" | "playerData"> = {
+      leaderId: "1",
       playerData: {
         0: generatePlayerData(false),
         1: generatePlayerData(false),
