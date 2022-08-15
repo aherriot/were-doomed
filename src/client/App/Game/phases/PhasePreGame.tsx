@@ -54,8 +54,8 @@ const PhasePreGame = ({
       <div className="max-w-lg mx-auto text-left mb-4">
         The end of the world is upon us. As a world leader, you must help build
         a space ship to escape the planet. The more you contribute to the
-        project the seats available to world leaders. However, world leaders
-        will board the ship in order of influence.
+        project the more seats are available to world leaders. However, world
+        leaders will board the ship in order of most influence.
       </div>
       {waitingForPlayers.length > 0 ? (
         <div>

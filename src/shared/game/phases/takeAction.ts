@@ -4,8 +4,8 @@ import { INVALID_MOVE } from "boardgame.io/core";
 import { MAX_NUMBER_OF_PLAYERS } from "../../../shared/utils";
 
 const first = (G: GameState, ctx: Ctx) => {
-  // return leader playOrderPos if there is a leader or 0 if it can't be found
-  if (G.leaderId != null) {
+  // return leader playOrderPos if there is a living leader or 0 if it can't be found
+  if (G.leaderId != null && G.playerData[G.leaderId].isAlive) {
     return Math.max(
       ctx.playOrder.findIndex((playerId) => playerId === G.leaderId),
       0
@@ -159,14 +159,13 @@ const nuke = (G: GameState, ctx: Ctx, targetId: string) => {
     return INVALID_MOVE;
   }
   const playerData = G.playerData[ctx.currentPlayer];
-
+  const targetData = G.playerData[targetId];
   const playerCost = playerData.government === "autocracy" ? 5 : 8;
 
   if (playerData.resources < playerCost) {
     return INVALID_MOVE;
   }
 
-  const targetData = G.playerData[targetId];
   if (!targetData || !targetData.isAlive) {
     return INVALID_MOVE;
   }
@@ -174,11 +173,11 @@ const nuke = (G: GameState, ctx: Ctx, targetId: string) => {
   targetData.isAlive = false;
   G.bank.influence += targetData.influence;
   targetData.influence = 0;
-
   G.bank.resources += targetData.resources;
   targetData.resources = 0;
 
   playerData.resources -= playerCost;
+  G.bank.resources += playerCost;
 
   G.actionHistory.push({
     action: "nuke",
